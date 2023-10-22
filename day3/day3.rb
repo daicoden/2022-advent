@@ -29,23 +29,24 @@ costs = {
   "z" => 26,
 }
 
-def find_duplicates(first, second)
+def find_duplicates(first, second, third)
   duplicates = []
   first.each_char do |a|
     second.each_char do |b|
-      duplicates << a if a == b
+      third.each_char do |c|
+        duplicates << a if a == b and b == c
+      end
     end
   end
+
+  p(duplicates)
 
   duplicates.uniq
 end
 
 
-duplicates = File.read("input.txt").chomp.each_line.map(&:chomp).map do |line|
-  middle = line.each_char.count/2
-  first_part = line[0...middle]
-  second_part = line[middle..-1]
-  find_duplicates(first_part, second_part)
+duplicates = File.read("input.txt").chomp.each_line.map(&:chomp).each_slice(3).map do |lines|
+  find_duplicates(lines[0], lines[1], lines[2])
 end
 
 p(duplicates)
